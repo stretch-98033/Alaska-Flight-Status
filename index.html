@@ -61,7 +61,15 @@
     }
 
     .checkbox-container {
-      margin: 0.3em 0 1em 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5em;
+      margin-bottom: 1em;
+      font-size: 0.9em;
+    }
+
+    .checkbox-container input[type="checkbox"] {
+      margin: 0;
     }
   </style>
 </head>
@@ -73,7 +81,7 @@
 
   <div class="checkbox-container">
     <input type="checkbox" id="remember" />
-    <label for="remember" style="font-size: 0.9em;">Remember this flight number</label>
+    <label for="remember">Remember this flight number</label>
   </div>
 
   <label for="offset">Date:</label>
