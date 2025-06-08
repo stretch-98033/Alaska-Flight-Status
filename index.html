@@ -106,74 +106,71 @@
 
   <button onclick="lookupFlight()">Check Status</button>
 
-  <script>
-  // Load saved flight number on page load
-  window.addEventListener('DOMContentLoaded', () => {
+<script>
+  // Populate flight input if saved
+  window.addEventListener("DOMContentLoaded", () => {
     const savedFlight = localStorage.getItem('savedFlight');
+    const flightInput = document.getElementById('flight');
+    const rememberBox = document.getElementById('remember');
     if (savedFlight) {
-      document.getElementById('flight').value = savedFlight;
-      document.getElementById('remember').checked = true;
+      flightInput.value = savedFlight;
+      rememberBox.checked = true;
     }
-  });
 
-  // Clear flight input when checkbox is unchecked
-  document.getElementById('remember').addEventListener('change', (e) => {
-    if (!e.target.checked) {
-      document.getElementById('flight').value = '';
-      localStorage.removeItem('savedFlight');
-    }
-  });
-  
-    // Load saved flight number on page load
-    window.addEventListener('DOMContentLoaded', () => {
-      const savedFlight = localStorage.getItem('savedFlight');
-      if (savedFlight) {
-        document.getElementById('flight').value = savedFlight;
-        document.getElementById('remember').checked = true;
+    rememberBox.addEventListener('change', () => {
+      if (!rememberBox.checked) {
+        localStorage.removeItem('savedFlight');
+        flightInput.value = '';
       }
     });
+  });
 
-    function lookupFlight() {
-  const flightInput = document.getElementById("flight");
-  const flight = flightInput.value.trim();
-  const offset = parseInt(document.getElementById("offset").value);
-  const remember = document.getElementById("remember").checked;
+  function lookupFlight() {
+    const flightInput = document.getElementById("flight");
+    const flight = flightInput.value.trim();
+    const offset = parseInt(document.getElementById("offset").value);
+    const remember = document.getElementById("remember").checked;
 
-  if (!/^\d+$/.test(flight)) {
-    alert("Please enter a valid numeric flight number.");
-    return;
+    if (!/^\d+$/.test(flight)) {
+      alert("Please enter a valid numeric flight number.");
+      return;
+    }
+
+    // Store or clear saved flight
+    if (remember) {
+      localStorage.setItem('savedFlight', flight);
+    } else {
+      localStorage.removeItem('savedFlight');
+    }
+
+    const now = new Date();
+    const lookupDate = new Date();
+    lookupDate.setDate(now.getDate() + offset);
+
+    const year = lookupDate.getFullYear();
+    const month = String(lookupDate.getMonth() + 1).padStart(2, '0');
+    const day = String(lookupDate.getDate()).padStart(2, '0');
+    const formattedDate = `${year}-${month}-${day}`;
+
+    // Alaska limitation logic: Flight pages exist only for flights <= 4 days ahead AND before the current hour
+    if (offset === 4) {
+      const currentHour = now.getHours();
+      const flightWillBeVisible = lookupDate.getHours() <= currentHour;
+
+      // Even if both are the same date, the time of day matters
+      const nowTime = now.getHours() * 60 + now.getMinutes();
+      const lookupTime = lookupDate.getHours() * 60 + lookupDate.getMinutes();
+
+      if (lookupTime > nowTime) {
+        const proceed = confirm("Alaska’s flight status page may not yet be available for flights more than 4 days out or those scheduled later today. Proceed anyway?");
+        if (!proceed) return;
+      }
+    }
+
+    const url = `https://www.alaskaair.com/status/${flight}/${formattedDate}`;
+    window.location.href = url;
   }
-
-  // Handle "remember" option
-  if (remember) {
-    localStorage.setItem('savedFlight', flight);
-  } else {
-    localStorage.removeItem('savedFlight');
-  }
-
-  const now = new Date();
-  const lookupDate = new Date();
-  lookupDate.setDate(now.getDate() + offset);
-
-  const year = lookupDate.getFullYear();
-  const month = String(lookupDate.getMonth() + 1).padStart(2, '0');
-  const day = String(lookupDate.getDate()).padStart(2, '0');
-  const formattedDate = `${year}-${month}-${day}`;
-
-  // Alaska flight availability warning
-  const maxValidDate = new Date();
-  maxValidDate.setDate(now.getDate() + 4);
-  const isTooFar = offset > 4 || (offset === 4 && lookupDate.getHours() > now.getHours());
-
-  if (isTooFar) {
-    const proceed = confirm("Alaska’s flight status page may not yet exist for this date and time. Proceed anyway?");
-    if (!proceed) return;
-  }
-
-  const url = `https://www.alaskaair.com/status/${flight}/${formattedDate}`;
-  window.location.href = url;
-}
-  </script>
+</script>
 
   <!-- Disclaimer and GitHub link -->
   <div style="text-align:center; font-size:0.85em; color:gray; margin-top:1em;">
