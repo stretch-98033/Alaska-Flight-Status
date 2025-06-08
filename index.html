@@ -143,35 +143,27 @@
       localStorage.removeItem('savedFlight');
     }
 
-    const now = new Date();
-    const lookupDate = new Date();
-    lookupDate.setDate(now.getDate() + offset);
-
-    const year = lookupDate.getFullYear();
-    const month = String(lookupDate.getMonth() + 1).padStart(2, '0');
-    const day = String(lookupDate.getDate()).padStart(2, '0');
-    const formattedDate = `${year}-${month}-${day}`;
-
-    // Alaska limitation logic: Flight pages exist only for flights <= 4 days ahead AND before the current hour
+    // Show warning if user selected 4 days from today
     if (offset === 4) {
-      const currentHour = now.getHours();
-      const flightWillBeVisible = lookupDate.getHours() <= currentHour;
-
-      // Even if both are the same date, the time of day matters
-      const nowTime = now.getHours() * 60 + now.getMinutes();
-      const lookupTime = lookupDate.getHours() * 60 + lookupDate.getMinutes();
-
-      if (lookupTime > nowTime) {
-        const proceed = confirm("Alaska’s flight status page may not yet be available for flights more than 4 days out or those scheduled later today. Proceed anyway?");
-        if (!proceed) return;
-      }
+      const proceed = confirm(
+        "Alaska’s flight status page might not yet exist for flights more than 4 days ahead or scheduled later in the day. Do you want to continue anyway?"
+      );
+      if (!proceed) return;
     }
+
+    const date = new Date();
+    date.setDate(date.getDate() + offset);
+
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const formattedDate = `${year}-${month}-${day}`;
 
     const url = `https://www.alaskaair.com/status/${flight}/${formattedDate}`;
     window.location.href = url;
   }
 </script>
-
+    
   <!-- Disclaimer and GitHub link -->
   <div style="text-align:center; font-size:0.85em; color:gray; margin-top:1em;">
     <p>
