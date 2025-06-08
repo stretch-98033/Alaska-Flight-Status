@@ -60,18 +60,8 @@
       opacity: 0.9;
     }
 
-    .flight-remember {
-      display: flex;
-      align-items: center;
-      gap: 0.5em;
-    }
-
-    .flight-remember label {
-      font-size: 0.9em;
-      display: flex;
-      align-items: center;
-      gap: 0.25em;
-      white-space: nowrap;
+    .checkbox-container {
+      margin: 0.3em 0 1em 0;
     }
   </style>
 </head>
@@ -79,9 +69,11 @@
   <h2>Alaska Flight Status</h2>
 
   <label for="flight">Flight Number:</label>
-  <div class="flight-remember">
-    <input type="text" id="flight" inputmode="numeric" placeholder="e.g., 331" required />
-    <label><input type="checkbox" id="remember" /> Remember</label>
+  <input type="text" id="flight" inputmode="numeric" placeholder="e.g., 331" required />
+
+  <div class="checkbox-container">
+    <input type="checkbox" id="remember" />
+    <label for="remember" style="font-size: 0.9em;">Remember this flight number</label>
   </div>
 
   <label for="offset">Date:</label>
@@ -98,31 +90,31 @@
   <button onclick="lookupFlight()">Check Status</button>
 
   <script>
-    // Load saved flight number if present
+    // Load saved flight number on page load
     window.addEventListener('DOMContentLoaded', () => {
-      const saved = localStorage.getItem('flightNumber');
-      if (saved) {
-        document.getElementById('flight').value = saved;
+      const savedFlight = localStorage.getItem('savedFlight');
+      if (savedFlight) {
+        document.getElementById('flight').value = savedFlight;
         document.getElementById('remember').checked = true;
       }
     });
 
     function lookupFlight() {
       const flightInput = document.getElementById("flight");
-      const remember = document.getElementById("remember").checked;
       const flight = flightInput.value.trim();
       const offset = parseInt(document.getElementById("offset").value);
+      const remember = document.getElementById("remember").checked;
 
       if (!/^\d+$/.test(flight)) {
         alert("Please enter a valid numeric flight number.");
         return;
       }
 
-      // Save or clear localStorage
+      // Save or remove based on checkbox
       if (remember) {
-        localStorage.setItem("flightNumber", flight);
+        localStorage.setItem('savedFlight', flight);
       } else {
-        localStorage.removeItem("flightNumber");
+        localStorage.removeItem('savedFlight');
       }
 
       const date = new Date();
@@ -137,7 +129,7 @@
       window.location.href = url;
     }
   </script>
-
+  
   <!-- Disclaimer and GitHub link -->
   <div style="text-align:center; font-size:0.85em; color:gray; margin-top:1em;">
     <p>
@@ -151,11 +143,10 @@
       </a>.
     </p>
   </div>
-
+  
   <p id="lastUpdated" style="text-align:center; font-size:0.9em; margin-top:2em; color:gray;"></p>
 
   <script>
-    // Show page design last updated date
     const lastModified = new Date(document.lastModified);
     const options = {
       year: 'numeric',
@@ -165,8 +156,8 @@
       minute: '2-digit',
       hour12: true
     };
-    document.getElementById('lastUpdated').textContent =
-      "Page Design Last Updated: " + lastModified.toLocaleString(undefined, options);
+    const formatted = lastModified.toLocaleString(undefined, options);
+    document.getElementById('lastUpdated').textContent = "Page Design Last Updated: " + formatted;
   </script>
 </body>
 </html>
