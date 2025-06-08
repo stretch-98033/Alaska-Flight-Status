@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Alaska Flight Status</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 2em;
+      max-width: 400px;
+      margin: auto;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 0.8em;
+      margin: 0.5em 0;
+      font-size: 1em;
+    }
+  </style>
+</head>
+<body>
+  <h2>Alaska Flight Status</h2>
+  <label for="flight">Flight Number:</label>
+  <input type="text" id="flight" placeholder="e.g., 460" required />
+
+  <label for="offset">Date:</label>
+  <select id="offset">
+    <option value="-1">Yesterday</option>
+    <option value="0" selected>Today</option>
+    <option value="1">Tomorrow</option>
+  </select>
+
+  <button onclick="lookupFlight()">Check Status</button>
+
+  <script>
+    function lookupFlight() {
+      const flight = document.getElementById("flight").value.trim();
+      const offset = parseInt(document.getElementById("offset").value);
+
+      if (!/^\d+$/.test(flight)) {
+        alert("Please enter a valid numeric flight number.");
+        return;
+      }
+
+      const date = new Date();
+      date.setDate(date.getDate() + offset);
+
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      const formattedDate = `${year}-${month}-${day}`;
+
+      const url = `https://www.alaskaair.com/status/${flight}/${formattedDate}`;
+      window.location.href = url;
+    }
+  </script>
+</body>
+</html>
