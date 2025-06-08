@@ -60,16 +60,19 @@
       opacity: 0.9;
     }
 
-    .checkbox-container {
+    .checkbox-wrapper {
+      background-color: var(--input-bg);
+      color: var(--text-color);
+      border-radius: 5px;
+      padding: 0.8em;
+      margin: 0.5em 0;
       display: flex;
       align-items: center;
-      gap: 0.5em;
-      margin-bottom: 1em;
-      font-size: 0.9em;
+      font-size: 0.95em;
     }
 
-    .checkbox-container input[type="checkbox"] {
-      margin: 0;
+    .checkbox-wrapper input[type="checkbox"] {
+      margin: 0 0.5em 0 0;
     }
   </style>
 </head>
@@ -79,7 +82,7 @@
   <label for="flight">Flight Number:</label>
   <input type="text" id="flight" inputmode="numeric" placeholder="e.g., 331" required />
 
-  <div class="checkbox-container">
+  <div class="checkbox-wrapper">
     <input type="checkbox" id="remember" />
     <label for="remember">Remember this flight number</label>
   </div>
@@ -118,7 +121,6 @@
         return;
       }
 
-      // Save or remove based on checkbox
       if (remember) {
         localStorage.setItem('savedFlight', flight);
       } else {
@@ -137,7 +139,7 @@
       window.location.href = url;
     }
   </script>
-  
+
   <!-- Disclaimer and GitHub link -->
   <div style="text-align:center; font-size:0.85em; color:gray; margin-top:1em;">
     <p>
@@ -151,7 +153,7 @@
       </a>.
     </p>
   </div>
-  
+
   <p id="lastUpdated" style="text-align:center; font-size:0.9em; margin-top:2em; color:gray;"></p>
 
   <script>
