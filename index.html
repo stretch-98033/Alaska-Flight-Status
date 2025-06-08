@@ -35,6 +35,7 @@
     *, *::before, *::after {
       box-sizing: border-box;
     }
+
     input, select, button {
       width: 100%;
       padding: 0.8em;
@@ -58,12 +59,30 @@
     button:hover {
       opacity: 0.9;
     }
+
+    .flight-remember {
+      display: flex;
+      align-items: center;
+      gap: 0.5em;
+    }
+
+    .flight-remember label {
+      font-size: 0.9em;
+      display: flex;
+      align-items: center;
+      gap: 0.25em;
+      white-space: nowrap;
+    }
   </style>
 </head>
 <body>
   <h2>Alaska Flight Status</h2>
+
   <label for="flight">Flight Number:</label>
-  <input type="text" id="flight" inputmode="numeric" placeholder="e.g., 331" required />
+  <div class="flight-remember">
+    <input type="text" id="flight" inputmode="numeric" placeholder="e.g., 331" required />
+    <label><input type="checkbox" id="remember" /> Remember</label>
+  </div>
 
   <label for="offset">Date:</label>
   <select id="offset">
@@ -79,13 +98,31 @@
   <button onclick="lookupFlight()">Check Status</button>
 
   <script>
+    // Load saved flight number if present
+    window.addEventListener('DOMContentLoaded', () => {
+      const saved = localStorage.getItem('flightNumber');
+      if (saved) {
+        document.getElementById('flight').value = saved;
+        document.getElementById('remember').checked = true;
+      }
+    });
+
     function lookupFlight() {
-      const flight = document.getElementById("flight").value.trim();
+      const flightInput = document.getElementById("flight");
+      const remember = document.getElementById("remember").checked;
+      const flight = flightInput.value.trim();
       const offset = parseInt(document.getElementById("offset").value);
 
       if (!/^\d+$/.test(flight)) {
         alert("Please enter a valid numeric flight number.");
         return;
+      }
+
+      // Save or clear localStorage
+      if (remember) {
+        localStorage.setItem("flightNumber", flight);
+      } else {
+        localStorage.removeItem("flightNumber");
       }
 
       const date = new Date();
@@ -100,39 +137,36 @@
       window.location.href = url;
     }
   </script>
-  
+
   <!-- Disclaimer and GitHub link -->
-<div style="text-align:center; font-size:0.85em; color:gray; margin-top:1em;">
-  <p>
-    This tool is unofficial and not affiliated with Alaska Airlines. Always confirm flight details at 
-    <a href="https://www.alaskaair.com/" target="_blank" style="color:inherit; text-decoration:underline;">alaskaair.com</a>.
-  </p>
-  <p>
-    View the source code on 
-    <a href="https://github.com/heykid6063/Alaska-Flight-Status" target="_blank" style="color:inherit; text-decoration:underline;">
-      GitHub
-    </a>.
-  </p>
-</div>
-  
+  <div style="text-align:center; font-size:0.85em; color:gray; margin-top:1em;">
+    <p>
+      This tool is unofficial and not affiliated with Alaska Airlines. Always confirm flight details at 
+      <a href="https://www.alaskaair.com/" target="_blank" style="color:inherit; text-decoration:underline;">alaskaair.com</a>.
+    </p>
+    <p>
+      View the source code on 
+      <a href="https://github.com/heykid6063/Alaska-Flight-Status" target="_blank" style="color:inherit; text-decoration:underline;">
+        GitHub
+      </a>.
+    </p>
+  </div>
+
   <p id="lastUpdated" style="text-align:center; font-size:0.9em; margin-top:2em; color:gray;"></p>
 
-<script>
-  // Get the last modified date/time of the document
-  const lastModified = new Date(document.lastModified);
-
-  // Format with full date and time (localized)
-  const options = {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    hour: 'numeric',
-    minute: '2-digit',
-    hour12: true
-  };
-
-  const formatted = lastModified.toLocaleString(undefined, options);
-  document.getElementById('lastUpdated').textContent = "Page Design Last Updated: " + formatted;
-</script>
+  <script>
+    // Show page design last updated date
+    const lastModified = new Date(document.lastModified);
+    const options = {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true
+    };
+    document.getElementById('lastUpdated').textContent =
+      "Page Design Last Updated: " + lastModified.toLocaleString(undefined, options);
+  </script>
 </body>
 </html>
