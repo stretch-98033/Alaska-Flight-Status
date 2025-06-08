@@ -93,5 +93,25 @@
       window.location.href = url;
     }
   </script>
+  
+  <p id="lastUpdated" style="text-align:center; font-size:0.9em; margin-top:2em; color:gray;"></p>
+
+<script>
+  // Get the last modified date/time of the document
+  const lastModified = new Date(document.lastModified);
+
+  // Format with full date and time (localized)
+  const options = {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true
+  };
+
+  const formatted = lastModified.toLocaleString(undefined, options);
+  document.getElementById('lastUpdated').textContent = "Last updated: " + formatted;
+</script>
 </body>
 </html>
