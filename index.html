@@ -103,15 +103,17 @@
     <option value="3">3 Days From Today</option>
     <option value="4">4 Days From Today</option>
   </select>
-
+<p id="warningMessage" style="color:orange; font-size:0.9em; display:none;"></p>
   <button onclick="lookupFlight()">Check Status</button>
 
 <script>
-  // Populate flight input if saved
   window.addEventListener("DOMContentLoaded", () => {
     const savedFlight = localStorage.getItem('savedFlight');
     const flightInput = document.getElementById('flight');
     const rememberBox = document.getElementById('remember');
+    const offsetSelect = document.getElementById('offset');
+    const warningMessage = document.getElementById('warningMessage');
+
     if (savedFlight) {
       flightInput.value = savedFlight;
       rememberBox.checked = true;
@@ -121,6 +123,16 @@
       if (!rememberBox.checked) {
         localStorage.removeItem('savedFlight');
         flightInput.value = '';
+      }
+    });
+
+    offsetSelect.addEventListener('change', () => {
+      const offset = parseInt(offsetSelect.value);
+      if (offset === 4) {
+        warningMessage.textContent = "Note: Alaska’s flight status pages may not be available for flights more than 4 days ahead or scheduled later in the day.";
+        warningMessage.style.display = 'block';
+      } else {
+        warningMessage.style.display = 'none';
       }
     });
   });
@@ -136,19 +148,10 @@
       return;
     }
 
-    // Store or clear saved flight
     if (remember) {
       localStorage.setItem('savedFlight', flight);
     } else {
       localStorage.removeItem('savedFlight');
-    }
-
-    // Show warning if user selected 4 days from today
-    if (offset === 4) {
-      const proceed = confirm(
-        "Alaska’s flight status page might not yet exist for flights more than 4 days ahead or scheduled later in the day. Do you want to continue anyway?"
-      );
-      if (!proceed) return;
     }
 
     const date = new Date();
@@ -163,6 +166,7 @@
     window.location.href = url;
   }
 </script>
+    
     
   <!-- Disclaimer and GitHub link -->
   <div style="text-align:center; font-size:0.85em; color:gray; margin-top:1em;">
