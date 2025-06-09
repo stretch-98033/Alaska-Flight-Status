@@ -147,7 +147,6 @@
       const flightInput = document.getElementById('flight');
       const rememberBox = document.getElementById('remember');
       const offsetSelect = document.getElementById('offset');
-      const warningMessage = document.getElementById('warningMessage');
 
       if (savedFlight) {
         flightInput.value = savedFlight;
@@ -162,6 +161,7 @@
       });
 
       function updateWarningMessage() {
+        const warningMessage = document.getElementById('warningMessage'); // ✅ FIXED
         const offset = parseInt(offsetSelect.value);
         if (offset === 4) {
           const now = new Date();
