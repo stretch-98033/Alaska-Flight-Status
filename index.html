@@ -57,13 +57,22 @@
         var(--gradient) border-box;
       border: 2px solid transparent;
       background-clip: padding-box, border-box;
+      transition: all 0.2s ease;
+    }
+
+    input[type="text"]:focus,
+    select:focus,
+    button:focus {
+      outline: none;
+      background:
+        linear-gradient(var(--input-bg), var(--input-bg)) padding-box,
+        var(--gradient) border-box;
     }
 
     button {
       background-color: var(--button-bg);
       color: var(--button-text);
       cursor: pointer;
-      transition: all 0.2s ease;
     }
 
     button:hover {
@@ -113,13 +122,16 @@
       cursor: pointer;
       position: relative;
       transition: all 0.2s ease-in-out;
+      background-clip: padding-box, border-box;
     }
 
-    .badge:hover {
+    .badge:hover,
+    .badge:focus {
       background:
-        linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)) padding-box,
+        linear-gradient(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05)) padding-box,
         var(--gradient) border-box;
       transform: scale(1.05);
+      outline: none;
     }
 
     .delete-btn {
