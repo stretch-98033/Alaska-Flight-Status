@@ -23,7 +23,7 @@
         --input-bg: #1e1e1e;
         --button-bg: #0077cc;
         --button-text: #ffffff;
-        --badge-bg: #333333;
+        --badge-bg: #2c2c2c;
         --badge-text: #f0f0f0;
         --delete-btn-color: #ff6b6b;
       }
@@ -32,7 +32,7 @@
     body {
       font-family: sans-serif;
       padding: 2em;
-      max-width: 400px;
+      max-width: 500px;
       margin: auto;
       background-color: var(--bg-color);
       color: var(--text-color);
@@ -81,11 +81,6 @@
       margin: 0;
     }
 
-    .checkbox-wrapper label {
-      margin: 0;
-      font-size: 0.95em;
-    }
-
     #searchHistory {
       display: flex;
       flex-wrap: wrap;
@@ -94,14 +89,29 @@
     }
 
     .badge {
-      display: inline-flex;
+      flex: 1 1 auto;
+      min-width: 120px;
+      justify-content: center;
       align-items: center;
-      padding: 13px 10px;
-      background-color: var(--badge-bg);
+      display: inline-flex;
+      padding: 12px 10px;
+      font-size: 0.95em;
+      background:
+        linear-gradient(var(--badge-bg), var(--badge-bg)) padding-box,
+        linear-gradient(45deg, #00bcd4, #3f51b5) border-box;
+      border: 2px solid transparent;
+      border-radius: 10px;
       color: var(--badge-text);
-      border-radius: 5px;
       cursor: pointer;
       position: relative;
+      transition: all 0.2s ease-in-out;
+    }
+
+    .badge:hover {
+      background:
+        linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)) padding-box,
+        linear-gradient(45deg, #00bcd4, #3f51b5) border-box;
+      transform: scale(1.05);
     }
 
     .delete-btn {
@@ -109,8 +119,8 @@
       color: var(--delete-btn-color);
       cursor: pointer;
       position: absolute;
-      right: 3px;
-      top: 0px;
+      right: 6px;
+      top: 2px;
     }
   </style>
 </head>
@@ -119,12 +129,15 @@
   <p style="font-size: 0.8em; font-weight: normal; color: gray; margin-top: -0.5em; margin-bottom: 1em;">
     Description: Alaska Airlines creates unique flight status pages for every flight. They are created 4 days in advance and live for 2–3 days after the flight. Enter the flight number and choose Today, Tomorrow, etc., then click Check Status to open that specific flight status page.
   </p>
+
   <label for="flight">Flight Number:</label>
   <input type="text" id="flight" inputmode="numeric" placeholder="e.g., 331" required autofocus />
+
   <div class="checkbox-wrapper">
     <input type="checkbox" id="remember" />
     <label for="remember">Remember this flight number</label>
   </div>
+
   <label for="offset">Date:</label>
   <select id="offset">
     <option value="-3">3 Days ago</option>
@@ -138,6 +151,7 @@
   </select>
 
   <p id="warningMessage" style="color:orange; font-size:0.9em; display:none;"></p>
+
   <div id="searchHistory"></div>
 
   <button onclick="lookupFlight()">Check Status</button>
@@ -282,6 +296,7 @@
       </a>.
     </p>
   </div>
+
   <p id="lastUpdated" style="text-align:center; font-size:0.75em; font-style:italic; margin-top:2em; color:gray;"></p>
   <script>
     const lastModified = new Date(document.lastModified);
