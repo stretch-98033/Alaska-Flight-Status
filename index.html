@@ -138,7 +138,6 @@
   <script>
     window.addEventListener("DOMContentLoaded", () => {
       initializeFlightInput();
-      initializeOffsetSelect();
       displaySearchHistory();
     });
 
@@ -147,6 +146,7 @@
       const flightInput = document.getElementById('flight');
       const rememberBox = document.getElementById('remember');
       const offsetSelect = document.getElementById('offset');
+      const warningMessage = document.getElementById('warningMessage');
 
       if (savedFlight) {
         flightInput.value = savedFlight;
@@ -161,7 +161,6 @@
       });
 
       function updateWarningMessage() {
-        const warningMessage = document.getElementById('warningMessage'); // ✅ FIXED
         const offset = parseInt(offsetSelect.value);
         if (offset === 4) {
           const now = new Date();
@@ -180,19 +179,6 @@
 
       offsetSelect.addEventListener('change', updateWarningMessage);
       updateWarningMessage();
-    }
-
-    function initializeOffsetSelect() {
-      const offsetSelect = document.getElementById('offset');
-      const warningMessage = document.getElementById('warningMessage');
-
-      offsetSelect.addEventListener('change', () => {
-        const offset = parseInt(offsetSelect.value);
-        warningMessage.style.display = offset === 4 ? 'block' : 'none';
-        if (offset === 4) {
-          warningMessage.textContent = "Note: Alaska’s flight status pages may not be available for flights more than 4 days ahead or scheduled later in the day.";
-        }
-      });
     }
 
     function displaySearchHistory() {
@@ -279,6 +265,7 @@
       navigateToFlightStatus(flight, offset);
     }
   </script>
+
   <div style="text-align:center; font-size:0.85em; color:gray; margin-top:1em;">
     <p>
       This tool is unofficial and not affiliated with Alaska Airlines. Always confirm flight details at
