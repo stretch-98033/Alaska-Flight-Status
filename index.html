@@ -86,9 +86,16 @@
       font-size: 0.95em;
     }
 
+    #searchHistory {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5em;
+      margin-bottom: 1em;
+    }
+
     .badge {
-      display: inline-block;
-      margin-right: 5px;
+      display: inline-flex;
+      align-items: center;
       padding: 13px 10px;
       background-color: var(--badge-bg);
       color: var(--badge-text);
@@ -131,7 +138,7 @@
   </select>
 
   <p id="warningMessage" style="color:orange; font-size:0.9em; display:none;"></p>
-  <div id="searchHistory" style="margin-bottom: 1em;padding-right:8px;"></div>
+  <div id="searchHistory"></div>
 
   <button onclick="lookupFlight()">Check Status</button>
 
@@ -160,7 +167,7 @@
         }
       });
 
-      function updateWarningMessage() {
+      offsetSelect.addEventListener('change', () => {
         const offset = parseInt(offsetSelect.value);
         if (offset === 4) {
           const now = new Date();
@@ -175,10 +182,7 @@
         } else {
           warningMessage.style.display = 'none';
         }
-      }
-
-      offsetSelect.addEventListener('change', updateWarningMessage);
-      updateWarningMessage();
+      });
     }
 
     function displaySearchHistory() {
