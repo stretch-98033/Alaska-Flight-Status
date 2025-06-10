@@ -34,10 +34,10 @@
         --focus-glow: 0 0 8px rgba(102, 170, 255, 0.7);
       }
     }
-    
+
     h2 {
       text-align: center;
-      }
+    }
 
     body {
       font-family: sans-serif;
@@ -46,8 +46,6 @@
       margin: auto;
       background-color: var(--bg-color);
       color: var(--text-color);
-      border: var(--border-width) solid transparent;
-      /*border-image: var(--gradient) 1;*/
       border-radius: var(--border-radius);
       box-sizing: border-box;
     }
@@ -57,37 +55,35 @@
     }
 
     input[type="text"],
-select,
-button {
-  width: 100%;
-  padding: 0.8em;
-  margin: 0.5em 0;
-  font-size: 1em;
-  border: 2px solid transparent;
-  border-radius: 10px;
-  background-origin: border-box;
-  background-clip: padding-box, border-box;
-  background-color: var(--input-bg);
-  color: var(--text-color);
-  background-image: 
-    linear-gradient(var(--input-bg), var(--input-bg)), 
-    linear-gradient(45deg, #00f2fe, #4facfe, #00f2fe);
-}
+    select,
+    button {
+      width: 100%;
+      padding: 0.8em;
+      margin: 0.5em 0;
+      font-size: 1em;
+      border: var(--border-width) solid transparent;
+      border-radius: var(--border-radius);
+      background-color: var(--input-bg);
+      color: var(--text-color);
+      background-clip: padding-box, border-box;
+      background-image:
+        linear-gradient(var(--input-bg), var(--input-bg)),
+        var(--gradient);
+      text-align: center;
+    }
 
     input[type="text"]:focus,
     select:focus,
-    button:focus,
-    .checkbox-wrapper:focus-within {
+    button:focus {
       outline: none;
       box-shadow: var(--focus-glow);
       border-color: transparent;
     }
 
     button {
-      background-color: var(--button-bg);
+      background-color: transparent;
       color: var(--button-text);
       cursor: pointer;
-      border: var(--border-width) solid transparent;
       background:
         linear-gradient(var(--button-bg), var(--button-bg)) padding-box,
         var(--gradient) border-box;
@@ -118,20 +114,19 @@ button {
       cursor: pointer;
     }
 
-    /* Badges container */
     #searchHistory {
       display: flex;
       gap: 12px;
-      flex-wrap: wrap-reverse;
+      flex-wrap: wrap;
+      justify-content: center;
       margin-bottom: 1em;
       padding-right: 8px;
     }
 
-    /* Badge style */
     .badge {
-      flex: 1 1 33%; /* Grow and shrink with min width */
-      max-width: 180px;
-      min-width: 100px;
+      flex: 1 1 42%;
+      max-width: 150px;
+      min-width: 110px;
       background-color: var(--badge-bg);
       color: var(--badge-text);
       border-radius: var(--border-radius);
@@ -144,6 +139,7 @@ button {
         var(--gradient) border-box;
       background-clip: padding-box, border-box;
       text-align: center;
+      display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 600;
@@ -173,7 +169,6 @@ button {
       color: #ff0000;
     }
 
-    /* Paragraph with warning message */
     #warningMessage {
       color: orange;
       font-size: 0.9em;
@@ -184,54 +179,28 @@ button {
       padding: 0.7em 1em;
       margin-top: 0.5em;
       background-color: var(--input-bg);
-      color: orange;
-      user-select: none;
+      text-align: center;
     }
 
-    /* Labels */
     label {
       display: block;
       margin-top: 1em;
       margin-bottom: 0.3em;
-      /*font-weight: 600;*/
       user-select: none;
+      text-align: center;
     }
 
-    /* Fix select background in dark mode */
     select {
       appearance: none;
       -webkit-appearance: none;
       -moz-appearance: none;
-      background-color: var(--input-bg);
-      color: var(--text-color);
-      background:
-        linear-gradient(var(--input-bg), var(--input-bg)) padding-box,
-        var(--gradient) border-box;
-      border: var(--border-width) solid transparent;
-      border-radius: var(--border-radius);
-      padding: 0.8em;
-      width: 100%;
-      font-size: 1em;
-      margin: 0.5em 0;
-      background-clip: padding-box, border-box;
-      transition: all 0.2s ease;
     }
 
-    select:focus {
-      outline: none;
-      box-shadow: var(--focus-glow);
-      background-color: var(--input-bg);
-      color: var(--text-color);
-      border-color: transparent;
-    }
-
-    /* Link styling */
     a {
       color: inherit;
       text-decoration: underline;
     }
 
-    /* Last updated text */
     #lastUpdated {
       text-align: center;
       font-size: 0.75em;
@@ -240,7 +209,6 @@ button {
       color: gray;
       user-select: none;
     }
-
   </style>
 </head>
 <body>
