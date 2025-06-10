@@ -57,24 +57,22 @@
     }
 
     input[type="text"],
-    select,
-    button,
-    .checkbox-wrapper {
-      width: 100%;
-      padding: 0.8em;
-      margin: 0.5em 0;
-      font-size: 1em;
-      border-radius: var(--border-radius);
-      border: var(--border-width) solid transparent;
-      background:
-        linear-gradient(var(--input-bg), var(--input-bg)) padding-box,
-        var(--gradient) border-box;
-      color: var(--text-color);
-      background-color: var(--input-bg); /* fallback for dark mode */
-      background-clip: padding-box, border-box;
-      transition: all 0.2s ease;
-      box-sizing: border-box;
-    }
+select,
+button {
+  width: 100%;
+  padding: 0.8em;
+  margin: 0.5em 0;
+  font-size: 1em;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  background-color: var(--input-bg);
+  color: var(--text-color);
+  background-image: 
+    linear-gradient(var(--input-bg), var(--input-bg)), 
+    linear-gradient(45deg, #00f2fe, #4facfe, #00f2fe);
+}
 
     input[type="text"]:focus,
     select:focus,
