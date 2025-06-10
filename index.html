@@ -409,6 +409,16 @@
 
       navigateToFlightStatus(flight, offset);
     }
+    
+    window.addEventListener('pageshow', function (event) {
+  if (event.persisted || performance.getEntriesByType("navigation")[0].type === "back_forward") {
+    // Re-run anything that should update the display
+    const searchHistoryDiv = document.getElementById('searchHistory');
+    searchHistoryDiv.innerHTML = ''; // Clear previous badges
+    displaySearchHistory();          // Rebuild them
+  }
+});
+
   </script>
 
   <div style="text-align:center; font-size:0.85em; color:gray; margin-top:1em;">
