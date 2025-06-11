@@ -326,7 +326,10 @@
 
       deleteBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        const updatedSearches = searches.filter(s => s !== `${flight}|${offset}`);
+        /*const updatedSearches = searches.filter(s => s !== `${flight}|${offset}`);*/
+        const existingSearches = JSON.parse(localStorage.getItem('searches') || '[]');
+        const updatedSearches = existingSearches.filter(s => s !== `${flight}|${offset}`);
+
         localStorage.setItem('searches', JSON.stringify(updatedSearches));
         badge.remove();
       });
