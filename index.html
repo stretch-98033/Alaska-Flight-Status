@@ -35,7 +35,9 @@
       }
     }
 
-    h2 { text-align: center; }
+    h2 {
+      text-align: center;
+    }
 
     body {
       font-family: sans-serif;
@@ -48,7 +50,9 @@
       box-sizing: border-box;
     }
 
-    *, *::before, *::after { box-sizing: inherit; }
+    *, *::before, *::after {
+      box-sizing: inherit;
+    }
 
     input[type="text"],
     select,
@@ -166,7 +170,9 @@
       transition: color 0.2s ease;
     }
 
-    .delete-btn:hover { color: #ff0000; }
+    .delete-btn:hover {
+      color: #ff0000;
+    }
 
     #warningMessage {
       color: orange;
@@ -213,7 +219,7 @@
 <body>
   <h2>Alaska Flight Status Finder</h2>
   <p style="font-size: 0.8em; font-weight: normal; text-align: center; color: gray; margin-top: -0.5em; margin-bottom: 1em;">
-    Description: Alaska Airlines creates unique flight status pages for every flight...
+    Description: Alaska Airlines creates unique flight status pages for every flight. They are created 4 days in advance and live for 2–3 days after the flight. Enter the flight number and choose Today, Tomorrow, etc., then click Check Status to open that specific flight status page.
   </p>
 
   <label for="flight">Flight Number:</label>
@@ -243,12 +249,7 @@
   <button onclick="lookupFlight()">Check Status</button>
 
   <script>
-    window.onerror = function (message, source, lineno, colno, error) {
-      console.error("Global error caught:", { message, source, lineno, colno, error });
-    };
-
     window.addEventListener("DOMContentLoaded", () => {
-      console.log("DOM fully loaded");
       initializeFlightInput();
       displaySearchHistory();
     });
@@ -261,20 +262,19 @@
       const warningMessage = document.getElementById('warningMessage');
 
       if (savedFlight) {
-        console.log("Restoring saved flight:", savedFlight);
         flightInput.value = savedFlight;
         rememberBox.checked = true;
       }
 
       rememberBox.addEventListener('change', () => {
         if (!rememberBox.checked) {
-          console.log("Removing saved flight");
           localStorage.removeItem('savedFlight');
           flightInput.value = '';
         }
       });
 
       offsetSelect.addEventListener('change', updateWarningMessage);
+
       updateWarningMessage();
 
       function updateWarningMessage() {
@@ -283,12 +283,10 @@
           const now = new Date();
           const futureDate = new Date(now);
           futureDate.setDate(now.getDate() + 4);
-          const formattedDate = futureDate.toLocaleDateString(undefined, {
-            weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
-          });
-          const formattedTime = now.toLocaleTimeString(undefined, {
-            hour: 'numeric', minute: '2-digit', hour12: true
-          });
+          const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+          const timeOptions = { hour: 'numeric', minute: '2-digit', hour12: true };
+          const formattedDate = futureDate.toLocaleDateString(undefined, dateOptions);
+          const formattedTime = now.toLocaleTimeString(undefined, timeOptions);
           warningMessage.textContent = `Flight status pages for ${formattedDate} departing after ${formattedTime} may not yet be available.`;
           warningMessage.style.display = 'block';
         } else {
@@ -300,9 +298,9 @@
 
     function displaySearchHistory() {
       const searchHistoryDiv = document.getElementById('searchHistory');
-      const searches = JSON.parse(localStorage.getItem('searches') || '[]');
-      console.log("Displaying search history:", searches);
       searchHistoryDiv.innerHTML = '';
+      const searches = JSON.parse(localStorage.getItem('searches') || '[]');
+
       searches.forEach(search => {
         const [flight, offset] = search.split('|');
         const badge = createSearchBadge(flight, offset, searches);
@@ -315,11 +313,11 @@
       const offsetText = offset == 0 ? 'today' : (offset > 0 ? `+${offset} days` : `${offset} days`);
       badge.textContent = `AS ${flight}, ${offsetText}`;
       badge.classList.add('badge');
+
       const deleteBtn = createDeleteButton(flight, offset, searches, badge);
       badge.appendChild(deleteBtn);
 
       badge.addEventListener('click', () => {
-        console.log(`Navigating to flight: ${flight}, offset: ${offset}`);
         navigateToFlightStatus(flight, offset);
       });
 
@@ -333,10 +331,11 @@
 
       deleteBtn.addEventListener('click', (e) => {
         e.stopPropagation();
+        /*const updatedSearches = searches.filter(s => s !== `${flight}|${offset}`);*/
         const existingSearches = JSON.parse(localStorage.getItem('searches') || '[]');
         const updatedSearches = existingSearches.filter(s => s !== `${flight}|${offset}`);
+
         localStorage.setItem('searches', JSON.stringify(updatedSearches));
-        console.log(`Deleted badge for flight ${flight} offset ${offset}`);
         badge.remove();
       });
 
@@ -346,7 +345,10 @@
     function navigateToFlightStatus(flight, offset) {
       const date = new Date();
       date.setDate(date.getDate() + parseInt(offset));
-      const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      const formattedDate = `${year}-${month}-${day}`;
       const url = `https://www.alaskaair.com/status/${flight}/${formattedDate}`;
       window.location.href = url;
     }
@@ -356,8 +358,6 @@
       const flight = flightInput.value.trim();
       const offset = parseInt(document.getElementById("offset").value);
       const remember = document.getElementById("remember").checked;
-
-      console.log(`Looking up flight: ${flight}, offset: ${offset}, remember: ${remember}`);
 
       if (!/^\d+$/.test(flight) || !( (flight >= 0 && flight <= 3500) || (flight >= 9000 && flight <= 9999) )) {
         alert("Please enter a valid flight number (0-3500 or 9000-9999).");
@@ -383,14 +383,16 @@
 
       navigateToFlightStatus(flight, offset);
     }
-
+    
     window.addEventListener('pageshow', function (event) {
-      if (event.persisted || performance.getEntriesByType("navigation")[0].type === "back_forward") {
-        console.log("Page restored from cache, reloading badges.");
-        document.getElementById('searchHistory').innerHTML = '';
-        displaySearchHistory();
-      }
-    });
+  if (event.persisted || performance.getEntriesByType("navigation")[0].type === "back_forward") {
+    // Re-run anything that should update the display
+    const searchHistoryDiv = document.getElementById('searchHistory');
+    searchHistoryDiv.innerHTML = ''; // Clear previous badges
+    displaySearchHistory();          // Rebuild them
+  }
+});
+
   </script>
 
   <div style="text-align:center; font-size:0.85em; color:gray; margin-top:1em;">
@@ -410,10 +412,15 @@
 
   <script>
     const lastModified = new Date(document.lastModified);
-    const formatted = lastModified.toLocaleString(undefined, {
-      year: 'numeric', month: 'long', day: 'numeric',
-      hour: 'numeric', minute: '2-digit', hour12: true
-    });
+    const options = {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true
+    };
+    const formatted = lastModified.toLocaleString(undefined, options);
     document.getElementById('lastUpdated').textContent = "Page design last updated on: " + formatted;
   </script>
 </body>
