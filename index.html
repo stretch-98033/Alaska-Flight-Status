@@ -43,12 +43,17 @@
       transition: background-color 9999s ease-out, color 9999s ease-out;
       -webkit-text-fill-color: var(--text-color) !important;
       background-color: var(--input-bg) !important;
-      box-shadow:
-        0 0 0px 1000px var(--input-bg) inset, /* simulate background */
-        0 0 0px var(--border-width) var(--gradient); /* simulate border */
-      border: none !important; /* remove browser-applied border */
+      box-shadow: 0 0 0px 1000px var(--input-bg) inset !important;
+      border: var(--border-width) solid transparent;
+      border-radius: var(--border-radius);
+      background-color: var(--input-bg);
+      color: var(--text-color);
       background-clip: padding-box, border-box;
-    }
+      background-image:
+        linear-gradient(var(--input-bg), var(--input-bg)),
+        var(--gradient);
+}
+
 
 
 
