@@ -362,8 +362,12 @@ window.addEventListener("DOMContentLoaded", () => {
   displaySearchHistory();
   displayFavorites();
 
-  const flightInput = document.getElementById('flight');
-  const rememberBox = document.getElementById('remember');
+function initializeFlightInput() {
+const savedFlight = localStorage.getItem('savedFlight');
+const flightInput = document.getElementById('flight');
+const rememberBox = document.getElementById('remember');
+const offsetSelect = document.getElementById('offset');
+const warningMessage = document.getElementById('warningMessage');
 
   flightInput.addEventListener('input', () => {
     if (rememberBox.checked) {
