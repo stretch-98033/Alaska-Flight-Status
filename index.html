@@ -526,9 +526,15 @@ function toggleFavorite(flight) {
       } else {
         btn.classList.add('inactive');
       }
+
+      // ✅ Force reflow for iOS to apply the style update visually
+      btn.style.display = 'none';
+      btn.offsetHeight; // reflow trigger
+      btn.style.display = '';
     }
   });
 }
+
 
 function displayFavorites() {
   const favoritesDiv = document.getElementById('favoritesList');
