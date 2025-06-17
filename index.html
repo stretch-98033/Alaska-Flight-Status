@@ -519,24 +519,25 @@ function toggleFavorite(flight) {
 
   // Update all favorite buttons for this flight
   document.querySelectorAll(`.favorite-btn`).forEach(oldBtn => {
-  const badge = oldBtn.closest('.badge');
-  if (badge && badge.dataset.flight === flight) {
-    const newBtn = document.createElement('span');
-    newBtn.classList.add('favorite-btn');
-    newBtn.innerHTML = '★';
+    const badge = oldBtn.closest('.badge');
+    if (badge && badge.dataset.flight === flight) {
+      const newBtn = document.createElement('span');
+      newBtn.classList.add('favorite-btn');
+      newBtn.innerHTML = '★';
 
-    if (!favorites.includes(flight)) {
-      newBtn.classList.add('inactive');
+      if (!favorites.includes(flight)) {
+        newBtn.classList.add('inactive');
+      }
+
+      newBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleFavorite(flight);
+      });
+
+      badge.replaceChild(newBtn, oldBtn);
     }
-
-    newBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      toggleFavorite(flight);
-    });
-
-    badge.replaceChild(newBtn, oldBtn);
-  }
-});
+  });
+}
 
 function displayFavorites() {
   const favoritesDiv = document.getElementById('favoritesList');
