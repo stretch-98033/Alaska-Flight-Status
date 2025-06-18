@@ -381,6 +381,7 @@ const warningMessage = document.getElementById('warningMessage');
       localStorage.setItem('savedFlight', flightInput.value.trim());
     } else {
       localStorage.removeItem('savedFlight');
+      flightInput.value = ''; // clear the text field
     }
   })
 }
