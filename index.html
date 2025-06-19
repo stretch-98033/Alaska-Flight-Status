@@ -609,34 +609,6 @@ function lookupFlight() {
     return;
   }
 
-  // Save to history
-  let searches = JSON.parse(localStorage.getItem('searches') || '[]');
-  const key = `${flightNumber}|${dateString}`;
-  if (!searches.includes(key)) {
-    searches.unshift(key);
-    if (searches.length > 20) {
-      searches.pop();
-    }
-    localStorage.setItem('searches', JSON.stringify(searches));
-  }
-
-  displaySearchHistory();
-
-  // ✅ Try fetching the status page first
-  fetch(url, { method: 'HEAD' })
-    .then(response => {
-      if (response.ok) {
-        window.location.href = url;
-      } else {
-        alert(`Flight AS${flightNumber} does not appear to have a status page for ${dateString}.`);
-      }
-    })
-    .catch(() => {
-      alert(`Unable to verify flight AS${flightNumber}. Please check your connection or try again later.`);
-    });
-}
-
-
   const offset = parseInt(offsetSelect.value);
   const today = forceToday();
   const targetDate = new Date(today);
